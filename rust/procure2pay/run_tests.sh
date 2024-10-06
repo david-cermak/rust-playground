@@ -11,9 +11,9 @@ cargo test --features sequential
 cargo test --features parallel
 
 # Run with samples
-cargo  run --release ../../samples/Activity_Log_2004_to_2014.csv --with-names
+cargo  run --release sample_log.csv --with-names
 # Evaluate timing (future consideration: performace counters in CI)
-duration=$(cargo  run --release ../../samples/Activity_Log_2004_to_2014.csv | grep -oP 'Duration: \K\d+(?= milliseconds)')
+duration=$(cargo  run --release sample_log.csv | grep -oP 'Duration: \K\d+(?= milliseconds)')
 if [ "$duration" -lt 50 ]; then
     echo "Passed: Duration ($duration) is below 50 ms"
 else
@@ -22,8 +22,8 @@ else
 fi
 
 # Integration tests (verify that golden impl yields the same results as the optimized one)
-cargo  run --release ../../samples/Activity_Log_2004_to_2014.csv --no-time-eval > parallel.txt
-cargo  run --release ../../samples/Activity_Log_2004_to_2014.csv --gold --no-time-eval > sequential.txt
+cargo  run --release sample_log.csv --no-time-eval > parallel.txt
+cargo  run --release sample_log.csv --gold --no-time-eval > sequential.txt
 if ! diff parallel.txt sequential.txt; then
     echo "Output of the two variants differ!";
     cat parallel.txt;
@@ -32,8 +32,8 @@ if ! diff parallel.txt sequential.txt; then
 fi
 
 # Check again with decimated inputs
-cargo  run --release ../../samples/Activity_Log_2004_to_2014.csv --decimate 10 --no-time-eval > parallel.txt
-cargo  run --release ../../samples/Activity_Log_2004_to_2014.csv --decimate 10 --gold --no-time-eval > sequential.txt
+cargo  run --release sample_log.csv --decimate 10 --no-time-eval > parallel.txt
+cargo  run --release sample_log.csv --decimate 10 --gold --no-time-eval > sequential.txt
 if ! diff parallel.txt sequential.txt; then
     echo "Output of the two variants differ!";
     cat parallel.txt;
