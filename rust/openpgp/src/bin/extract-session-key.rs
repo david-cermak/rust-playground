@@ -59,6 +59,7 @@ impl<'a> DecryptionHelper for Helper<'a> {
             .clone();
 
         let mut pair = key.into_keypair()?;
+      // println!("{:?}", pkesks);
         if let Some(decrypted) = pkesks[0].decrypt(&mut pair, sym_algo) {
             println!("Decrypted type: {:?}", decrypted);
             let (algo, session_key) = decrypted;
